@@ -1,5 +1,8 @@
 <template>
   <div class="phonics-learning">
+    <div class="confetti-container" v-show="showConfetti">
+      <div v-for="n in 50" :key="n" class="confetti" :style="getConfettiStyle(n)"></div>
+    </div>
     <div class="phonics-grid">
       <div v-for="phoneme in phonemes" :key="phoneme.symbol" class="phoneme-card" :class="{ completed: phoneme.completed }" @click="selectPhoneme(phoneme)">
         <div class="phoneme-symbol">{{ phoneme.symbol }}</div>
@@ -100,9 +103,28 @@ function playWordSound(word: string) {
   speechSynthesis.speak(utterance);
 }
 
+const showConfetti = ref(false);
+
+function getConfettiStyle(n) {
+  const randomX = Math.random() * 100;
+  const randomRotate = Math.random() * 360;
+  const randomColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+  const randomDelay = Math.random() * 3;
+  return {
+    '--x': `${randomX}%`,
+    '--rotate': `${randomRotate}deg`,
+    '--background': randomColor,
+    '--delay': `${randomDelay}s`
+  };
+}
+
 function markPhonemeCompleted() {
   if (selectedPhoneme.value) {
     selectedPhoneme.value.completed = true;
+    showConfetti.value = true;
+    setTimeout(() => {
+      showConfetti.value = false;
+    }, 4000);
   }
 }
 </script>
@@ -241,5 +263,35 @@ function markPhonemeCompleted() {
 .complete-btn.completed {
   background: #42b883;
   color: white;
+}
+
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: var(--background);
+  transform-origin: center;
+  animation: confetti-fall 4s var(--delay) forwards;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-100%) translateX(var(--x)) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) translateX(calc(var(--x) - 20%)) rotate(var(--rotate));
+    opacity: 0;
+  }
 }
 </style>

@@ -35,8 +35,9 @@ const skillStore = useSkillStore();
 
 .skill-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, calc((100% - 40px) / 3)));
   gap: 20px;
+  max-width: 100%;
 }
 
 .skill-card {

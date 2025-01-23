@@ -1,7 +1,8 @@
 <template>
   <div class="app">
     <header>
-      <h1>三脚猫学习</h1>
+      <h1>三脚猫</h1>
+      <p class="slogan">学习从此简单快乐</p>
     </header>
     
     <main>
@@ -37,5 +38,12 @@ header {
 
 header h1 {
   color: #42b883;
+  margin-bottom: 8px;
+}
+
+.slogan {
+  color: #666;
+  font-size: 1.2em;
+  margin: 0;
 }
 </style>
